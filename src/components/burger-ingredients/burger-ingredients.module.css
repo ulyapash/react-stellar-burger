@@ -24,9 +24,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  flex: 1 0 auto;
   align-items: center;
   gap: 4px;
-  max-width: 272px;
+  width: 262px;
   color: #fff;
 }

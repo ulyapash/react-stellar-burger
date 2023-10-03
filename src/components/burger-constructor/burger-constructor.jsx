@@ -1,4 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useDrop } from "react-dnd";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -10,16 +12,68 @@ import { Modal } from "../modal/modal";
 import { OrderDetails } from "../order-details/order-details";
 import { BurgerConstructorElements } from "../burger-constructor-elements/burger-constructor-elements";
 import { ingredientPropType } from "../../utils/prop-types";
+import {
+  bunSelector,
+  burgerIngredientsSelector,
+} from "../../services/selectors/burgerConstructorSelector";
 
 import styles from "./burger-constructor.module.css";
+import {
+  putBun,
+  putBurgerIngredient,
+} from "../../services/actions/burgerConstructorActions";
+import {
+  orderErrorSelector,
+  orderLoadingSelector,
+  orderNameSelector,
+  orderNumberSelector,
+} from "../../services/selectors/orderSelector";
+import { makeOrder } from "../../services/actions/orderActions";
 
-export const BurgerContructor = ({ ingredients }) => {
+export const BurgerContructor = () => {
   const [isModalOpened, setIsModalOpened] = useState(false);
 
+  const dispatch = useDispatch();
+
+  const bun = useSelector(bunSelector);
+  const burgerIngredients = useSelector(burgerIngredientsSelector);
+
+  const orderLoading = useSelector(orderLoadingSelector);
+  const orderName = useSelector(orderNameSelector);
+  const orderNumber = useSelector(orderNumberSelector);
+  const orderError = useSelector(orderErrorSelector);
+
+  useEffect(() => {
+    if (orderName && orderNumber) {
+      handleOpenModal();
+    }
+  }, [orderName, orderNumber]);
+
+  const handleOrderMaking = () => {
+    dispatch(
+      makeOrder(
+        burgerIngredients.map((ingredient) => ingredient._id).concat(bun._id)
+      )
+    );
+  };
+
   const totalSum = useMemo(
-    () => ingredients.reduce((sum, ingredient) => sum + ingredient.price, 40), // 40 is bun (up) + bun(bottom)
-    [ingredients]
+    () =>
+      burgerIngredients.reduce((sum, ingredient) => sum + ingredient.price, 0) +
+      (bun ? bun.price * 2 : 0),
+    [burgerIngredients, bun]
   );
+
+  const [, dropTarget] = useDrop({
+    accept: "ingredient",
+    drop(ingredient) {
+      if (ingredient.type === "bun") {
+        dispatch(putBun(ingredient));
+      } else {
+        dispatch(putBurgerIngredient(ingredient));
+      }
+    },
+  });
 
   const handleOpenModal = () => {
     setIsModalOpened(true);
@@ -29,44 +83,56 @@ export const BurgerContructor = ({ ingredients }) => {
     setIsModalOpened(false);
   };
 
+  if (orderError) {
+    return <p className="text text_type_main-large mt-10">{orderError}</p>;
+  }
+
   return (
     <>
-      <section className={`${styles.burgerConstructor} mt-25 mb-8`}>
-        <div className="ml-8 mr-8">
-          <ConstructorElement
-            text="Краторная булка N-200i (верх)"
-            thumbnail="https://code.s3.yandex.net/react/code/bun-02.png"
-            price={20}
-            isLocked
-          />
-        </div>
-        <BurgerConstructorElements ingredients={ingredients} />
-        <div className="ml-8 mr-8">
-          <ConstructorElement
-            text="Краторная булка N-200i (низ)"
-            thumbnail="https://code.s3.yandex.net/react/code/bun-02.png"
-            price={20}
-            isLocked
-          />
-        </div>
+      <section
+        className={`${styles.burgerConstructor} mt-25 mb-8`}
+        ref={dropTarget}
+      >
+        {bun && (
+          <div className="ml-8 mr-8">
+            <ConstructorElement
+              text={`${bun.name} (верх)`}
+              thumbnail={bun.image}
+              price={bun.price}
+              isLocked
+            />
+          </div>
+        )}
+        <BurgerConstructorElements ingredients={burgerIngredients} />
+        {bun && (
+          <div className="ml-8 mr-8">
+            <ConstructorElement
+              text={`${bun.name} (низ)`}
+              thumbnail={bun.image}
+              price={bun.price}
+              isLocked
+            />
+          </div>
+        )}
         <div className={`${styles.orderInfo} mt-10 mr-8 ml-8`}>
           <div className={styles.orderPrice}>
-            <p className="text text_type_digits-medium">{totalSum}</p>
+            <p className="text text_type_digits-medium mr-2">{totalSum}</p>
             <CurrencyIcon type="primary" />
           </div>
           <Button
             htmlType="button"
             type="primary"
             size="large"
-            onClick={handleOpenModal}
+            disabled={burgerIngredients.length === 0 || orderLoading || !bun}
+            onClick={handleOrderMaking}
           >
-            Оформить заказ
+            {orderLoading ? "Оформление..." : "Оформить заказ"}
           </Button>
         </div>
       </section>
       {isModalOpened && (
         <Modal onClose={handleCloseModal}>
-          <OrderDetails />
+          <OrderDetails name={orderName} number={orderNumber} />
         </Modal>
       )}
     </>
