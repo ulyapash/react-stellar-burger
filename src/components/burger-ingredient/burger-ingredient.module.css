@@ -1,0 +1,25 @@
+.burgetIngridient {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  max-width: 272px;
+  height: 208px;
+  cursor: pointer;
+}
+
+.image {
+  max-width: 240px;
+  margin: 0 auto;
+}
+
+.price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.name {
+  text-align: center;
+}

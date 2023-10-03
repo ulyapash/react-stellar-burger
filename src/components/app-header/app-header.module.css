@@ -1,0 +1,33 @@
+.header {
+  margin: 0 auto;
+  background-color: #1c1c21;
+  min-width: 1280px;
+}
+
+.content {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 1280px;
+  margin: 0 auto;
+}
+
+.links {
+  display: flex;
+}
+
+.link {
+  display: flex;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}

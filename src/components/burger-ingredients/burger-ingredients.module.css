@@ -1,0 +1,32 @@
+.burgerDetails {
+  width: 600px;
+}
+
+.tabs {
+  display: flex;
+}
+
+.content {
+  height: 600px;
+  overflow-y: auto;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 0;
+  list-style-type: none;
+}
+
+.item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  align-items: center;
+  gap: 4px;
+  max-width: 272px;
+  color: #fff;
+}

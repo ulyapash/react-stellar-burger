@@ -1,7 +1,10 @@
 .app {
+  margin: 40px;
+}
+
+.burgerComponents {
   display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background-color: #131316;
-  color: #f2f2f3;
+  gap: 40px;
+  width: 1280px;
+  margin: 0 auto;
 }

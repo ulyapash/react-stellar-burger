@@ -1,0 +1,17 @@
+.burgerConstructor {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 686px;
+}
+
+.orderInfo {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 40px;
+}
+
+.orderPrice {
+  display: flex;
+}
