@@ -1,4 +1,4 @@
-import { BASE_URL } from "../../utils/api";
+import { request } from "../../utils/request";
 
 export const MAKE_ORDER_REQUEST = "MAKE_ORDER_REQUEST";
 export const MAKE_ORDER_SUCCESS = "MAKE_ORDER_SUCCESS";
@@ -10,20 +10,13 @@ export const makeOrder = (burgerIngredientIds) => {
       type: MAKE_ORDER_REQUEST,
     });
 
-    fetch(BASE_URL + "/orders", {
+    request("/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ ingredients: burgerIngredientIds }),
     })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-
-        return Promise.reject(`Ошибка ${res.status}`);
-      })
       .then((result) => {
         dispatch({
           type: MAKE_ORDER_SUCCESS,

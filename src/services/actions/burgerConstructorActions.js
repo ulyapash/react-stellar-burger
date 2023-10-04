@@ -1,7 +1,10 @@
+import { v4 as uuidV4 } from "uuid";
+
 export const PUT_BUN = "PUT_BUN";
 export const PUT_BURGER_INGREDIENT = "PUT_BURGER_INGREDIENT";
 export const DELETE_BURGER_INGREDIENT = "DELETE_BURGER_INGREDIENT";
 export const CHANGE_ORDER_INGREDIENTS = "CHANGE_ORDER_INGREDIENTS";
+export const CLEAR_CONSTRUCTOR = "CLEAR_CONSTRUCTOR";
 
 export const putBun = (bun) => {
   return {
@@ -13,7 +16,7 @@ export const putBun = (bun) => {
 export const putBurgerIngredient = (ingredient) => {
   return {
     type: PUT_BURGER_INGREDIENT,
-    payload: ingredient,
+    payload: { ...ingredient, uniqueId: uuidV4() },
   };
 };
 

@@ -12,7 +12,7 @@ export const BurgerConstructorElements = ({ ingredients }) => {
         <BurgerContructorElement
           ingredient={ingredient}
           index={index}
-          key={index}
+          key={ingredient.uniqueId}
         />
       ))}
     </div>

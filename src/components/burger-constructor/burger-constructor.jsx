@@ -16,9 +16,8 @@ import {
   bunSelector,
   burgerIngredientsSelector,
 } from "../../services/selectors/burgerConstructorSelector";
-
-import styles from "./burger-constructor.module.css";
 import {
+  CLEAR_CONSTRUCTOR,
   putBun,
   putBurgerIngredient,
 } from "../../services/actions/burgerConstructorActions";
@@ -29,9 +28,12 @@ import {
   orderNumberSelector,
 } from "../../services/selectors/orderSelector";
 import { makeOrder } from "../../services/actions/orderActions";
+import { useModal } from "../../hooks/useModal";
+
+import styles from "./burger-constructor.module.css";
 
 export const BurgerContructor = () => {
-  const [isModalOpened, setIsModalOpened] = useState(false);
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   const dispatch = useDispatch();
 
@@ -45,9 +47,12 @@ export const BurgerContructor = () => {
 
   useEffect(() => {
     if (orderName && orderNumber) {
-      handleOpenModal();
+      dispatch({
+        type: CLEAR_CONSTRUCTOR,
+      });
+      openModal();
     }
-  }, [orderName, orderNumber]);
+  }, [orderName, orderNumber, openModal]);
 
   const handleOrderMaking = () => {
     dispatch(
@@ -75,14 +80,6 @@ export const BurgerContructor = () => {
     },
   });
 
-  const handleOpenModal = () => {
-    setIsModalOpened(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpened(false);
-  };
-
   if (orderError) {
     return <p className="text text_type_main-large mt-10">{orderError}</p>;
   }
@@ -99,6 +96,7 @@ export const BurgerContructor = () => {
               text={`${bun.name} (верх)`}
               thumbnail={bun.image}
               price={bun.price}
+              type="top"
               isLocked
             />
           </div>
@@ -110,6 +108,7 @@ export const BurgerContructor = () => {
               text={`${bun.name} (низ)`}
               thumbnail={bun.image}
               price={bun.price}
+              type="bottom"
               isLocked
             />
           </div>
@@ -130,8 +129,8 @@ export const BurgerContructor = () => {
           </Button>
         </div>
       </section>
-      {isModalOpened && (
-        <Modal onClose={handleCloseModal}>
+      {isModalOpen && (
+        <Modal onClose={closeModal}>
           <OrderDetails name={orderName} number={orderNumber} />
         </Modal>
       )}

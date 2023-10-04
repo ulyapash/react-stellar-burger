@@ -7,16 +7,18 @@ import { IngredientDetails } from "../ingredient-details/ingredient-details";
 import { Modal } from "../modal/modal";
 import { BurgerIngredient } from "../burger-ingredient/burger-ingredient";
 import { ingredientPropType } from "../../utils/prop-types";
-
-import styles from "./burger-ingredients.module.css";
 import {
   CLEAR_CURRENT_INGREDIENT,
   SET_CURRENT_INGREDIENT,
 } from "../../services/actions/currentIngredientActions";
+import { useModal } from "../../hooks/useModal";
+
+import styles from "./burger-ingredients.module.css";
 
 export const BurgerDetails = ({ ingredients }) => {
   const [currentTab, setCurrentTab] = useState("Булки");
-  const [isModalOpened, setIsModalOpened] = useState(false);
+
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   const ingredientsRef = useRef(null);
   const bunsRef = useRef(null);
@@ -81,7 +83,7 @@ export const BurgerDetails = ({ ingredients }) => {
   };
 
   const handleOpenModal = (ingredient) => () => {
-    setIsModalOpened(true);
+    openModal();
     dispatch({
       type: SET_CURRENT_INGREDIENT,
       payload: ingredient,
@@ -89,7 +91,7 @@ export const BurgerDetails = ({ ingredients }) => {
   };
 
   const handleCloseModal = () => {
-    setIsModalOpened(false);
+    closeModal();
     dispatch({
       type: CLEAR_CURRENT_INGREDIENT,
     });
@@ -170,8 +172,8 @@ export const BurgerDetails = ({ ingredients }) => {
           </ul>
         </div>
       </section>
-      {isModalOpened && (
-        <Modal onClose={handleCloseModal}>
+      {isModalOpen && (
+        <Modal title="Детали ингредиента" onClose={handleCloseModal}>
           <IngredientDetails />
         </Modal>
       )}

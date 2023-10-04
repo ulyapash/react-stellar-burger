@@ -8,7 +8,10 @@ export const IngredientDetails = () => {
 
   return (
     <div className={`${styles.ingredientDetails} pb-10 pb-15`}>
-      <img src={ingredient.image} alt="Биокотлета из марсианской Магнолии" />
+      <img
+        src={ingredient.image_large}
+        alt="Биокотлета из марсианской Магнолии"
+      />
       <span className={`${styles.name} text text_type_main-medium mt-4`}>
         {ingredient.name}
       </span>
