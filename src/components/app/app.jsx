@@ -1,46 +1,89 @@
+import { useEffect } from "react";
+import { Switch, Route, useLocation, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import "@ya.praktikum/react-developer-burger-ui-components";
 
 import { AppHeader } from "../app-header/app-header";
-import { BurgerDetails } from "../burger-ingredients/burger-ingredients";
-import { BurgerContructor } from "../burger-constructor/burger-constructor";
+import { ProtectedRoute } from "../protected-route/protected-route";
+import { Modal } from "../modal/modal";
+import { IngredientDetails } from "../ingredient-details/ingredient-details";
+
+import MainPage from "../../pages/main/main";
+import LoginPage from "../../pages/login/login";
+import RegisterPage from "../../pages/register/register";
+import ForgotPasswordPage from "../../pages/forgot-password/forgot-password";
+import ResetPasswordPage from "../../pages/reset-password/reset-password";
+import ProfilePage from "../../pages/profile/profile";
+import IngredientDetailsPage from "../../pages/ingredient-details/ingredients-details";
+
+import { getIngredients } from "../../services/actions/ingredientsActions";
+import { userIsUserLoadingSelector } from "../../services/selectors/userSelector";
+import { getUserData } from "../../services/actions/userActions";
+import { ingredientsLoadingSelector } from "../../services/selectors/ingredientsSelector";
 
 import styles from "./app.module.css";
-import { useEffect } from "react";
-import { getIngredients } from "../../services/actions/ingredientsActions";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  ingredientsDataSelector,
-  ingredientsErrorSelector,
-  ingredientsLoadingSelector,
-} from "../../services/selectors/ingredientsSelector";
 
-function App() {
+const App = () => {
+  const isUserLoading = useSelector(userIsUserLoadingSelector);
+  const isIngredientsLoading = useSelector(ingredientsLoadingSelector);
+
+  const history = useHistory();
+  const location = useLocation();
+  const previousLocation = location?.state?.previous;
+  console.log(previousLocation);
   const dispatch = useDispatch();
-  const isLoading = useSelector(ingredientsLoadingSelector);
-  const ingredients = useSelector(ingredientsDataSelector);
-  const error = useSelector(ingredientsErrorSelector);
 
   useEffect(() => {
     dispatch(getIngredients());
+    dispatch(getUserData());
   }, [dispatch]);
 
-  if (isLoading) {
+  if (isUserLoading || isIngredientsLoading) {
     return <p className="text text_type_main-large">Загрузка...</p>;
-  }
-
-  if (error) {
-    return <p className="text text_type_main-large">{error}</p>;
   }
 
   return (
     <div className={styles.app}>
       <AppHeader />
-      <main className={`${styles.burgerComponents} custom-scroll`}>
-        <BurgerDetails ingredients={ingredients} />
-        <BurgerContructor />
-      </main>
+      <Switch location={previousLocation || location}>
+        <ProtectedRoute path="/login" exact authorized={false}>
+          <LoginPage />
+        </ProtectedRoute>
+        <ProtectedRoute path="/register" exact authorized={false}>
+          <RegisterPage />
+        </ProtectedRoute>
+        <ProtectedRoute path="/forgot-password" exact authorized={false}>
+          <ForgotPasswordPage />
+        </ProtectedRoute>
+        <ProtectedRoute path="/reset-password" exact authorized={false}>
+          <ResetPasswordPage />
+        </ProtectedRoute>
+        <ProtectedRoute path="/profile" exact>
+          <ProfilePage />
+        </ProtectedRoute>
+        <ProtectedRoute path="/profile/orders" exact></ProtectedRoute>
+        <Route path="/ingredients/:id" exact>
+          <IngredientDetailsPage />
+        </Route>
+        <Route path="/" exact>
+          <MainPage />
+        </Route>
+        {previousLocation && (
+          <Route path="/ingredients/:id" exact>
+            <Modal
+              title="Детали ингредиента"
+              onClose={() => {
+                history.replace({ pathname: "/" });
+              }}
+            >
+              <IngredientDetails />
+            </Modal>
+          </Route>
+        )}
+      </Switch>
     </div>
   );
-}
+};
 
 export default App;

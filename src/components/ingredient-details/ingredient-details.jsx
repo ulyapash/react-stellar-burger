@@ -6,6 +6,10 @@ import { currentIngredientSelector } from "../../services/selectors/currentIngre
 export const IngredientDetails = () => {
   const ingredient = useSelector(currentIngredientSelector);
 
+  if (!ingredient) {
+    return null;
+  }
+
   return (
     <div className={`${styles.ingredientDetails} pb-10 pb-15`}>
       <img

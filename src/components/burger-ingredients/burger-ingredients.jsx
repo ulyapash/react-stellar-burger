@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import PropTypes from "prop-types";
+import { Link, useLocation } from "react-router-dom";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from "prop-types";
 
 import { IngredientDetails } from "../ingredient-details/ingredient-details";
 import { Modal } from "../modal/modal";
@@ -25,6 +26,7 @@ export const BurgerDetails = ({ ingredients }) => {
   const saucesRef = useRef(null);
   const mainsRef = useRef(null);
 
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const buns = useMemo(
@@ -134,12 +136,20 @@ export const BurgerDetails = ({ ingredients }) => {
           </h2>
           <ul className={`${styles.list} pl-4 pr-4`}>
             {buns.map((bun) => (
-              <li className={styles.item} key={bun._id}>
-                <BurgerIngredient
-                  ingredient={bun}
-                  handleOpenModal={handleOpenModal(bun)}
-                />
-              </li>
+              <Link
+                to={{
+                  pathname: `/ingredients/${bun._id}`,
+                  state: { previous: location },
+                }}
+                key={bun._id}
+              >
+                <li className={styles.item} key={bun._id}>
+                  <BurgerIngredient
+                    ingredient={bun}
+                    handleOpenModal={handleOpenModal(bun)}
+                  />
+                </li>
+              </Link>
             ))}
           </ul>
 
@@ -148,12 +158,20 @@ export const BurgerDetails = ({ ingredients }) => {
           </h2>
           <ul className={`${styles.list} pl-4 pr-4`}>
             {sauces.map((sauce) => (
-              <li className={styles.item} key={sauce._id}>
-                <BurgerIngredient
-                  ingredient={sauce}
-                  handleOpenModal={handleOpenModal(sauce)}
-                />
-              </li>
+              <Link
+                to={{
+                  pathname: `/ingredients/${sauce._id}`,
+                  state: { previous: location },
+                }}
+                key={sauce._id}
+              >
+                <li className={styles.item}>
+                  <BurgerIngredient
+                    ingredient={sauce}
+                    handleOpenModal={handleOpenModal(sauce)}
+                  />
+                </li>
+              </Link>
             ))}
           </ul>
 
@@ -162,12 +180,20 @@ export const BurgerDetails = ({ ingredients }) => {
           </h2>
           <ul className={`${styles.list} pl-4 pr-4`}>
             {mains.map((main) => (
-              <li className={styles.item} key={main._id}>
-                <BurgerIngredient
-                  ingredient={main}
-                  handleOpenModal={handleOpenModal(main)}
-                />
-              </li>
+              <Link
+                to={{
+                  pathname: `/ingredients/${main._id}`,
+                  state: { previous: location },
+                }}
+                key={main._id}
+              >
+                <li className={styles.item} key={main._id}>
+                  <BurgerIngredient
+                    ingredient={main}
+                    handleOpenModal={handleOpenModal(main)}
+                  />
+                </li>
+              </Link>
             ))}
           </ul>
         </div>
