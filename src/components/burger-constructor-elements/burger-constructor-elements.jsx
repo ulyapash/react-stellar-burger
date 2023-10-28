@@ -7,11 +7,15 @@ import styles from "./burger-constructor-elements.module.css";
 
 export const BurgerConstructorElements = ({ ingredients }) => {
   return (
-    <main className={`${styles.burgerConstructorElements} custom-scroll`}>
-      {ingredients.map((ingredient) => (
-        <BurgerContructorElement ingredient={ingredient} key={ingredient._id} />
+    <div className={`${styles.burgerConstructorElements} custom-scroll`}>
+      {ingredients.map((ingredient, index) => (
+        <BurgerContructorElement
+          ingredient={ingredient}
+          index={index}
+          key={ingredient.uniqueId}
+        />
       ))}
-    </main>
+    </div>
   );
 };
 

@@ -1,11 +1,17 @@
-import { ingredientPropType } from "../../utils/prop-types";
+import { useSelector } from "react-redux";
 
 import styles from "./ingredient-details.module.css";
+import { currentIngredientSelector } from "../../services/selectors/currentIngredientSelector";
 
-export const IngredientDetails = ({ ingredient }) => {
+export const IngredientDetails = () => {
+  const ingredient = useSelector(currentIngredientSelector);
+
   return (
     <div className={`${styles.ingredientDetails} pb-10 pb-15`}>
-      <img src={ingredient.image} alt="Биокотлета из марсианской Магнолии" />
+      <img
+        src={ingredient.image_large}
+        alt="Биокотлета из марсианской Магнолии"
+      />
       <span className={`${styles.name} text text_type_main-medium mt-4`}>
         {ingredient.name}
       </span>
@@ -45,8 +51,4 @@ export const IngredientDetails = ({ ingredient }) => {
       </div>
     </div>
   );
-};
-
-IngredientDetails.propTypes = {
-  ingredient: ingredientPropType,
 };

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import "@ya.praktikum/react-developer-burger-ui-components";
 
 import { AppHeader } from "../app-header/app-header";
@@ -6,35 +5,31 @@ import { BurgerDetails } from "../burger-ingredients/burger-ingredients";
 import { BurgerContructor } from "../burger-constructor/burger-constructor";
 
 import styles from "./app.module.css";
+import { useEffect } from "react";
+import { getIngredients } from "../../services/actions/ingredientsActions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  ingredientsDataSelector,
+  ingredientsErrorSelector,
+  ingredientsLoadingSelector,
+} from "../../services/selectors/ingredientsSelector";
 
 function App() {
-  const [ingredients, setIngredients] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+  const isLoading = useSelector(ingredientsLoadingSelector);
+  const ingredients = useSelector(ingredientsDataSelector);
+  const error = useSelector(ingredientsErrorSelector);
 
   useEffect(() => {
-    setIsLoading(true);
-
-    fetch("https://norma.nomoreparties.space/api/ingredients")
-      .then((response) => {
-        response.json().then((result) => {
-          if (result.success) {
-            setIngredients(result.data);
-          }
-          setIsLoading(false);
-        });
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        console.error("Error: ", error);
-      });
-  }, []);
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   if (isLoading) {
     return <p className="text text_type_main-large">Загрузка...</p>;
   }
 
-  if (!ingredients) {
-    return <p className="text text_type_main-large">Произошла ошибка</p>;
+  if (error) {
+    return <p className="text text_type_main-large">{error}</p>;
   }
 
   return (
@@ -42,7 +37,7 @@ function App() {
       <AppHeader />
       <main className={`${styles.burgerComponents} custom-scroll`}>
         <BurgerDetails ingredients={ingredients} />
-        <BurgerContructor ingredients={ingredients} />
+        <BurgerContructor />
       </main>
     </div>
   );

@@ -14,4 +14,5 @@
 
 .orderPrice {
   display: flex;
+  align-items: center;
 }
