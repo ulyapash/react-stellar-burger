@@ -19,9 +19,6 @@
 
 .link {
   display: flex;
-}
-
-a {
   text-decoration: none;
   color: #fff;
 }

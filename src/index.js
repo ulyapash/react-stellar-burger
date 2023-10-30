@@ -1,8 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import ReactDOM from "react-dom";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
+import { BrowserRouter } from "react-router-dom";
 
 import App from "./components/app/app";
 import reportWebVitals from "./reportWebVitals";
@@ -12,11 +11,11 @@ import "./index.css";
 
 ReactDOM.render(
   <React.StrictMode>
-    <DndProvider backend={HTML5Backend}>
+    <BrowserRouter>
       <Provider store={store}>
         <App />
       </Provider>
-    </DndProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );

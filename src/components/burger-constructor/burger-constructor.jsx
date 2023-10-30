@@ -1,6 +1,7 @@
-import { useState, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
+import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -31,14 +32,17 @@ import { makeOrder } from "../../services/actions/orderActions";
 import { useModal } from "../../hooks/useModal";
 
 import styles from "./burger-constructor.module.css";
+import { userIsLoggedSelector } from "../../services/selectors/userSelector";
 
 export const BurgerContructor = () => {
   const { isModalOpen, openModal, closeModal } = useModal();
 
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const bun = useSelector(bunSelector);
   const burgerIngredients = useSelector(burgerIngredientsSelector);
+  const isLogged = useSelector(userIsLoggedSelector);
 
   const orderLoading = useSelector(orderLoadingSelector);
   const orderName = useSelector(orderNameSelector);
@@ -52,14 +56,18 @@ export const BurgerContructor = () => {
       });
       openModal();
     }
-  }, [orderName, orderNumber, openModal]);
+  }, [dispatch, orderName, orderNumber, openModal]);
 
   const handleOrderMaking = () => {
-    dispatch(
-      makeOrder(
-        burgerIngredients.map((ingredient) => ingredient._id).concat(bun._id)
-      )
-    );
+    if (!isLogged) {
+      history.push("/login");
+    } else {
+      dispatch(
+        makeOrder(
+          burgerIngredients.map((ingredient) => ingredient._id).concat(bun._id)
+        )
+      );
+    }
   };
 
   const totalSum = useMemo(
