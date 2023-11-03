@@ -1,5 +1,4 @@
-import { Dispatch } from "redux";
-import { TUserData } from "../../types";
+import { AppDispatch, TAppThunk, TUserData } from "../../types";
 import { getCookie, setCookie } from "../../utils/cookies";
 import { request, requestWithToken } from "../../utils/request";
 
@@ -22,7 +21,7 @@ export enum TUser {
 }
 
 export const login = (data: Pick<TUserData, "email" | "password">) => {
-  return function (dispatch: Dispatch) {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: TUser.LOGIN_REQUEST,
     });
@@ -55,7 +54,7 @@ export const login = (data: Pick<TUserData, "email" | "password">) => {
 };
 
 export const register = (data: TUserData) => {
-  return function (dispatch: Dispatch) {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: TUser.REGISTER_REQUEST,
     });
@@ -88,7 +87,7 @@ export const register = (data: TUserData) => {
 };
 
 export const logout = () => {
-  return function (dispatch: Dispatch) {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: TUser.LOGOUT_REQUEST,
     });
@@ -117,8 +116,8 @@ export const logout = () => {
   };
 };
 
-export const getUserData = () => {
-  return function (dispatch: Dispatch) {
+export const getUserData = (): TAppThunk => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: TUser.GET_USER_REQUEST,
     });
@@ -143,8 +142,8 @@ export const getUserData = () => {
   };
 };
 
-export const updateUser = (data: TUserData) => {
-  return function (dispatch: Dispatch) {
+export const updateUser = (data: TUserData): TAppThunk => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: TUser.UPDATE_USER_REQUEST,
     });

@@ -1,6 +1,5 @@
 import { FC, useEffect } from "react";
 import { Switch, Route, useLocation, useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { Location } from "history";
 
 import "@ya.praktikum/react-developer-burger-ui-components";
@@ -23,16 +22,20 @@ import { userIsUserLoadingSelector } from "../../services/selectors/userSelector
 import { getUserData } from "../../services/actions/userActions";
 import { ingredientsLoadingSelector } from "../../services/selectors/ingredientsSelector";
 
+import { useAppDispatch, useAppSelector } from "../../types";
+
 import styles from "./app.module.css";
+import FeedPage from "../../pages/feed/feed";
+import OrderInfo from "../order-info/order-info";
 
 const App: FC = () => {
-  const isUserLoading = useSelector(userIsUserLoadingSelector);
-  const isIngredientsLoading = useSelector(ingredientsLoadingSelector);
+  const isUserLoading = useAppSelector(userIsUserLoadingSelector);
+  const isIngredientsLoading = useAppSelector(ingredientsLoadingSelector);
 
   const history = useHistory();
   const location = useLocation<{ previous: Location }>();
-  const previousLocation = location?.state?.previous;
-  const dispatch = useDispatch();
+  const previousLocation = location.state && location.state.previous;
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(getIngredients());
@@ -59,19 +62,27 @@ const App: FC = () => {
         <ProtectedRoute path="/reset-password" exact authorized={false}>
           <ResetPasswordPage />
         </ProtectedRoute>
-        <ProtectedRoute path="/profile" exact>
+        <ProtectedRoute path="/profile/orders/:number" exact>
+          <OrderInfo />
+        </ProtectedRoute>
+        <ProtectedRoute path="/profile">
           <ProfilePage />
         </ProtectedRoute>
-        <ProtectedRoute path="/profile/orders" exact>
-          <div>Скоро будет реализовано</div>
-        </ProtectedRoute>
+        <Route path="/feed/:number" exact>
+          <OrderInfo />
+        </Route>
+        <Route path="/feed" exact>
+          <FeedPage />
+        </Route>
         <Route path="/ingredients/:id" exact>
           <IngredientDetailsPage />
         </Route>
         <Route path="/" exact>
           <MainPage />
         </Route>
-        {previousLocation && (
+      </Switch>
+      {previousLocation && (
+        <>
           <Route path="/ingredients/:id" exact>
             <Modal
               title="Детали ингредиента"
@@ -82,8 +93,26 @@ const App: FC = () => {
               <IngredientDetails />
             </Modal>
           </Route>
-        )}
-      </Switch>
+          <Route path="/feed/:number" exact>
+            <Modal
+              onClose={() => {
+                history.replace({ pathname: "/feed" });
+              }}
+            >
+              <OrderInfo />
+            </Modal>
+          </Route>
+          <ProtectedRoute path="/profile/orders/:number" exact>
+            <Modal
+              onClose={() => {
+                history.replace({ pathname: "/orders" });
+              }}
+            >
+              <OrderInfo />
+            </Modal>
+          </ProtectedRoute>
+        </>
+      )}
     </div>
   );
 };

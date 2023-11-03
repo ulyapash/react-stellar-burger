@@ -1,5 +1,4 @@
 import { FC, useCallback, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useDrag, useDrop } from "react-dnd";
 
 import {
@@ -7,14 +6,11 @@ import {
   ConstructorElement,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import {
-  TBurgerConstructor,
-  changeOrderIngredients,
-} from "../../services/actions/burgerConstructorActions";
+import { TBurgerConstructor } from "../../services/actions/burgerConstructorActions";
 import { burgerIngredientsSelector } from "../../services/selectors/burgerConstructorSelector";
+import { TIngredientData, useAppDispatch, useAppSelector } from "../../types";
 
 import styles from "./burger-contructor-element.module.css";
-import { TIngredientData } from "../../types";
 
 type TProps = {
   index: number;
@@ -22,17 +18,26 @@ type TProps = {
 };
 
 export const BurgerContructorElement: FC<TProps> = ({ index, ingredient }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const ref = useRef<HTMLDivElement>(null);
 
-  const ingredients = useSelector(burgerIngredientsSelector);
+  const ingredients = useAppSelector(burgerIngredientsSelector);
 
   const changeIngredients = (
     dragIndex: number,
     hoverIndex: number,
     ingredients: TIngredientData[]
   ) => {
-    dispatch(changeOrderIngredients(dragIndex, hoverIndex, ingredients));
+    const sortedIngredients = [...ingredients];
+
+    const draggingItem = ingredients[dragIndex];
+    const [hoveredItem] = sortedIngredients.splice(hoverIndex, 1, draggingItem);
+    sortedIngredients.splice(dragIndex, 1, hoveredItem);
+
+    dispatch({
+      type: TBurgerConstructor.CHANGE_ORDER_INGREDIENTS,
+      payload: sortedIngredients,
+    });
   };
 
   const handleRemoveElement = useCallback(() => {

@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { useSelector } from "react-redux";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -11,13 +10,14 @@ import {
   ingredientsErrorSelector,
   ingredientsLoadingSelector,
 } from "../../services/selectors/ingredientsSelector";
+import { useAppSelector } from "../../types";
 
 import styles from "./main.module.css";
 
 const MainPage: FC = () => {
-  const isLoading = useSelector(ingredientsLoadingSelector);
-  const ingredients = useSelector(ingredientsDataSelector);
-  const error = useSelector(ingredientsErrorSelector);
+  const isLoading = useAppSelector(ingredientsLoadingSelector);
+  const ingredients = useAppSelector(ingredientsDataSelector);
+  const error = useAppSelector(ingredientsErrorSelector);
 
   if (isLoading) {
     return <p className="text text_type_main-large">Загрузка...</p>;

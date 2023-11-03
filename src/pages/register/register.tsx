@@ -1,5 +1,4 @@
 import { FC, useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 
 import {
@@ -14,19 +13,21 @@ import {
   userRegisterErrorSelector,
   userIsLoggedSelector,
 } from "../../services/selectors/userSelector";
+import { register } from "../../services/actions/userActions";
+
+import { useAppDispatch, useAppSelector } from "../../types";
 
 import "../../styles/form.css";
-import { register } from "../../services/actions/userActions";
 
 const RegisterPage: FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const isLoading = useSelector(userIsRegisterLoadingSelector);
-  const isLogged = useSelector(userIsLoggedSelector);
-  const error = useSelector(userRegisterErrorSelector);
+  const isLoading = useAppSelector(userIsRegisterLoadingSelector);
+  const isLogged = useAppSelector(userIsLoggedSelector);
+  const error = useAppSelector(userRegisterErrorSelector);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
 
   const handleNameChange = useCallback(
@@ -54,8 +55,6 @@ const RegisterPage: FC = () => {
     e.preventDefault();
     dispatch(register({ name, email, password }));
   };
-
-  console.log(isLogged);
 
   useEffect(() => {
     if (isLogged) {

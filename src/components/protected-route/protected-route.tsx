@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { useSelector } from "react-redux";
 import { Route, Redirect, useLocation, RouteProps } from "react-router-dom";
 
 import { userIsLoggedSelector } from "../../services/selectors/userSelector";
+import { useAppSelector } from "../../types";
 
 type TProps = RouteProps & {
   authorized?: boolean;
@@ -13,7 +13,7 @@ export const ProtectedRoute: FC<TProps> = ({
   children,
   ...rest
 }) => {
-  const isLogged = useSelector(userIsLoggedSelector);
+  const isLogged = useAppSelector(userIsLoggedSelector);
   const location = useLocation<{ from: string }>();
 
   if (authorized && !isLogged) {

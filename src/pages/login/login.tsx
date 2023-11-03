@@ -1,6 +1,5 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 
 import {
   Button,
@@ -16,17 +15,19 @@ import {
   userLoginErrorSelector,
 } from "../../services/selectors/userSelector";
 
+import { useAppDispatch, useAppSelector } from "../../types";
+
 import "../../styles/form.css";
 
 const LoginPage: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const isLoading = useSelector(userIsLoginLoadingSelector);
-  const userData = useSelector(userDataSelector);
-  const isLogged = useSelector(userIsLoggedSelector);
-  const error = useSelector(userLoginErrorSelector);
+  const isLoading = useAppSelector(userIsLoginLoadingSelector);
+  const userData = useAppSelector(userDataSelector);
+  const isLogged = useAppSelector(userIsLoggedSelector);
+  const error = useAppSelector(userLoginErrorSelector);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const location = useLocation<{ from: string }>();
 

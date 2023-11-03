@@ -7,15 +7,9 @@
 }
 
 .links {
-  max-width: 320px;
+  min-width: 320px;
 }
 
 .link {
   cursor: pointer;
-}
-
-.inputs {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
 }

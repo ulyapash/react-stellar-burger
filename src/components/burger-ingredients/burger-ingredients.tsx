@@ -1,5 +1,4 @@
 import { FC, useEffect, useMemo, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link, useHistory, useLocation } from "react-router-dom";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -11,7 +10,7 @@ import { BurgerIngredient } from "../burger-ingredient/burger-ingredient";
 import { useModal } from "../../hooks/useModal";
 
 import styles from "./burger-ingredients.module.css";
-import { TIngredientData } from "../../types";
+import { TIngredientData, useAppDispatch } from "../../types";
 import { TCurrentIngredient } from "../../services/actions/currentIngredientActions";
 
 type TProps = {
@@ -30,7 +29,7 @@ export const BurgerDetails: FC<TProps> = ({ ingredients }) => {
 
   const location = useLocation();
   const history = useHistory();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const buns = useMemo(
     () => ingredients.filter((ingridient) => ingridient.type === "bun"),

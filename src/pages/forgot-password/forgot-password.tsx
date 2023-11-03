@@ -1,6 +1,5 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 
 import {
   Button,
@@ -15,15 +14,16 @@ import {
 import { forgotPassword } from "../../services/actions/forgotPasswordActions";
 
 import "../../styles/form.css";
+import { useAppDispatch, useAppSelector } from "../../types";
 
 const ForgotPasswordPage: FC = () => {
   const [email, setEmail] = useState("");
-  const isLoading = useSelector(forgotPasswordLoadingSelector);
-  const isAllowed = useSelector(forgotPasswordAllowedSelector);
-  const error = useSelector(forgotPasswordErrorSelector);
+  const isLoading = useAppSelector(forgotPasswordLoadingSelector);
+  const isAllowed = useAppSelector(forgotPasswordAllowedSelector);
+  const error = useAppSelector(forgotPasswordErrorSelector);
 
   const history = useHistory();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleEmailChange = useCallback((e) => {
     setEmail(e.target.value);
