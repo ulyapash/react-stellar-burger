@@ -1,4 +1,5 @@
 import { AppDispatch, TAppThunk, TOrderData } from "../../types";
+import { getCookie } from "../../utils/cookies";
 import { requestWithToken } from "../../utils/request";
 
 export enum TOrder {
@@ -18,6 +19,7 @@ export const makeOrder = (burgerIngredientIds: string[]): TAppThunk => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + getCookie("accessToken"),
       },
       body: JSON.stringify({ ingredients: burgerIngredientIds }),
     })
