@@ -6,6 +6,14 @@ export enum TSocket {
   SOCKET_GET_MESSAGE = "SOCKET_GET_MESSAGE",
 }
 
+export type TWSActions = {
+  init: typeof TSocket.SOCKET_CONNECTION_START,
+  onOpen: typeof TSocket.SOCKET_CONNECTION_SUCCESS,
+  onError: typeof TSocket.SOCKET_CONNECTION_ERROR,
+  onClose: typeof TSocket.SOCKET_CONNECTION_CLOSE,
+  onMessage: typeof TSocket.SOCKET_GET_MESSAGE,
+}
+
 type TSocketConnectionStart = {
   type: TSocket.SOCKET_CONNECTION_START;
   payload: string;
