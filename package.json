@@ -1,7 +1,7 @@
 {
   "name": "react-stellar-burger",
   "version": "0.1.0",
-  "homepage": "https://ulyapash.github.io/react-stellar-burger/",
+  "homepage": "https://ulyapash.github.io/react-stellar-burger",
   "private": true,
   "dependencies": {
     "@redux-devtools/extension": "^3.2.5",

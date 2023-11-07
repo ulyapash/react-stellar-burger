@@ -9,9 +9,11 @@ import { store } from "./services/store";
 
 import "./index.css";
 
+console.log('ok')
+
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/react-stellar-burger">
       <Provider store={store}>
         <App />
       </Provider>
