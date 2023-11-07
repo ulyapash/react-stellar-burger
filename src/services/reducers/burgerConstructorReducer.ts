@@ -10,7 +10,7 @@ type TState = {
   burgerIngredients: TIngredientData[];
 };
 
-const initialState: TState = {
+export const initialState: TState = {
   bun: null,
   burgerIngredients: [],
 };

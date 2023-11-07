@@ -105,7 +105,7 @@ const App: FC = () => {
           <ProtectedRoute path="/profile/orders/:number" exact>
             <Modal
               onClose={() => {
-                history.replace({ pathname: "/orders" });
+                history.replace({ pathname: "/profile/orders" });
               }}
             >
               <OrderInfo />

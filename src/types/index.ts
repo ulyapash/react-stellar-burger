@@ -8,7 +8,7 @@ import { TIngredientsActions } from "../services/actions/ingredientsActions";
 import { TOrderActions } from "../services/actions/orderActions";
 import { TResetPasswordActions } from "../services/actions/resetPasswordActions";
 import { TUserActions } from "../services/actions/userActions";
-import { TFeedActions } from "../services/actions/feedActions";
+import { TSocketActions } from "../services/actions/socketActions";
 
 export type TIngredientData = {
   _id: string;
@@ -63,7 +63,7 @@ type TAppActions =
   | TOrderActions
   | TResetPasswordActions
   | TUserActions
-  | TFeedActions;
+  | TSocketActions;
 
 export type RootState = ReturnType<typeof store.getState>;
 

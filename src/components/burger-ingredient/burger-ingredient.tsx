@@ -15,13 +15,9 @@ import { TIngredientData, useAppSelector } from "../../types";
 
 type TProps = {
   ingredient: TIngredientData;
-  handleOpenModal: () => void;
 };
 
-export const BurgerIngredient: FC<TProps> = ({
-  ingredient,
-  handleOpenModal,
-}) => {
+export const BurgerIngredient: FC<TProps> = ({ ingredient }) => {
   const bun = useAppSelector(bunSelector);
   const burgerIngredients = useAppSelector(burgerIngredientsSelector);
 
@@ -50,8 +46,8 @@ export const BurgerIngredient: FC<TProps> = ({
     <>
       <div
         className={`${styles.burgerIngridient} mb-8`}
-        onClick={handleOpenModal}
         ref={dragRef}
+        data-testid="burger-ingredient"
       >
         {count !== 0 && <Counter count={count} size="default" />}
         <img

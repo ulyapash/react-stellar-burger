@@ -8,7 +8,7 @@ type TState = {
   error: Error | null;
 };
 
-const initialState = {
+export const initialState = {
   isLoading: false,
   name: null,
   number: null,

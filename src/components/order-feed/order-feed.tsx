@@ -1,7 +1,5 @@
 import { FC, useEffect } from "react";
 
-import { TFeed } from "../../services/actions/feedActions";
-import { useAppDispatch, useAppSelector } from "../../types";
 import {
   feedErrorSelector,
   feedOrdersSelector,
@@ -9,6 +7,10 @@ import {
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
 
 import OrderFeedElement from "../order-feed-element/order-feed-element";
+import { TSocket } from "../../services/actions/socketActions";
+import { SOCKET_URL } from "../../utils/api";
+
+import { useAppDispatch, useAppSelector } from "../../types";
 
 import styles from "./order-feed.module.css";
 
@@ -23,13 +25,13 @@ const OrderFeed: FC = () => {
 
   useEffect(() => {
     dispatch({
-      type: TFeed.FEED_CONNECTION_START,
-      payload: "/orders/all",
+      type: TSocket.SOCKET_CONNECTION_START,
+      payload: SOCKET_URL + "/orders/all",
     });
 
     return () => {
       dispatch({
-        type: TFeed.FEED_CONNECTION_CLOSE,
+        type: TSocket.SOCKET_CONNECTION_CLOSE,
       });
     };
   }, [dispatch]);
@@ -41,7 +43,7 @@ const OrderFeed: FC = () => {
   if (error) {
     return (
       <p className="text text_type_main-large">
-        Возникал ошибка при загрузке заказов
+        Возникла ошибка при загрузке заказов
       </p>
     );
   }

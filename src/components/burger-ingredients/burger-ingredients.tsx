@@ -1,17 +1,12 @@
 import { FC, useEffect, useMemo, useRef, useState } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { IngredientDetails } from "../ingredient-details/ingredient-details";
-import { Modal } from "../modal/modal";
 import { BurgerIngredient } from "../burger-ingredient/burger-ingredient";
 
-import { useModal } from "../../hooks/useModal";
-
 import styles from "./burger-ingredients.module.css";
-import { TIngredientData, useAppDispatch } from "../../types";
-import { TCurrentIngredient } from "../../services/actions/currentIngredientActions";
+import { TIngredientData } from "../../types";
 
 type TProps = {
   ingredients: TIngredientData[];
@@ -20,16 +15,12 @@ type TProps = {
 export const BurgerDetails: FC<TProps> = ({ ingredients }) => {
   const [currentTab, setCurrentTab] = useState("Булки");
 
-  const { isModalOpen, openModal, closeModal } = useModal();
-
   const ingredientsRef = useRef<HTMLDivElement>(null);
   const bunsRef = useRef<HTMLHeadingElement>(null);
   const saucesRef = useRef<HTMLHeadingElement>(null);
   const mainsRef = useRef<HTMLHeadingElement>(null);
 
   const location = useLocation();
-  const history = useHistory();
-  const dispatch = useAppDispatch();
 
   const buns = useMemo(
     () => ingredients.filter((ingridient) => ingridient.type === "bun"),
@@ -86,23 +77,6 @@ export const BurgerDetails: FC<TProps> = ({ ingredients }) => {
     setCurrentTab(ingredientTypes[indexOfMinOffset]);
   };
 
-  const handleOpenModal = (ingredient: TIngredientData) => () => {
-    openModal();
-    dispatch({
-      type: TCurrentIngredient.SET_CURRENT_INGREDIENT,
-      payload: ingredient,
-    });
-  };
-
-  const handleCloseModal = () => {
-    closeModal();
-    dispatch({
-      type: TCurrentIngredient.CLEAR_CURRENT_INGREDIENT,
-    });
-
-    history.push("/");
-  };
-
   return (
     <>
       <section className={`${styles.burgerDetails} pt-10 pl-5 pl-5`}>
@@ -148,10 +122,7 @@ export const BurgerDetails: FC<TProps> = ({ ingredients }) => {
                 key={bun._id}
               >
                 <li className={styles.item} key={bun._id}>
-                  <BurgerIngredient
-                    ingredient={bun}
-                    handleOpenModal={handleOpenModal(bun)}
-                  />
+                  <BurgerIngredient ingredient={bun} />
                 </li>
               </Link>
             ))}
@@ -170,10 +141,7 @@ export const BurgerDetails: FC<TProps> = ({ ingredients }) => {
                 key={sauce._id}
               >
                 <li className={styles.item}>
-                  <BurgerIngredient
-                    ingredient={sauce}
-                    handleOpenModal={handleOpenModal(sauce)}
-                  />
+                  <BurgerIngredient ingredient={sauce} />
                 </li>
               </Link>
             ))}
@@ -192,21 +160,13 @@ export const BurgerDetails: FC<TProps> = ({ ingredients }) => {
                 key={main._id}
               >
                 <li className={styles.item} key={main._id}>
-                  <BurgerIngredient
-                    ingredient={main}
-                    handleOpenModal={handleOpenModal(main)}
-                  />
+                  <BurgerIngredient ingredient={main} />
                 </li>
               </Link>
             ))}
           </ul>
         </div>
       </section>
-      {isModalOpen && (
-        <Modal title="Детали ингредиента" onClose={handleCloseModal}>
-          <IngredientDetails />
-        </Modal>
-      )}
     </>
   );
 };

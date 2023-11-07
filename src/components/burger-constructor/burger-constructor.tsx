@@ -104,9 +104,10 @@ export const BurgerContructor: FC = () => {
       <section
         className={`${styles.burgerConstructor} mt-25 mb-8`}
         ref={dropTarget}
+        data-testid="burger-constructor"
       >
         {bun && (
-          <div className="ml-8 mr-8">
+          <div className="ml-8 mr-8" data-testid="top-bun">
             <ConstructorElement
               text={`${bun.name} (верх)`}
               thumbnail={bun.image}
@@ -116,9 +117,12 @@ export const BurgerContructor: FC = () => {
             />
           </div>
         )}
-        <BurgerConstructorElements ingredients={burgerIngredients!} />
+        <BurgerConstructorElements
+          ingredients={burgerIngredients!}
+          data-testid="burger-ingredients"
+        />
         {bun && (
-          <div className="ml-8 mr-8">
+          <div className="ml-8 mr-8" data-testid="bottom-bun">
             <ConstructorElement
               text={`${bun.name} (низ)`}
               thumbnail={bun.image}
@@ -139,6 +143,7 @@ export const BurgerContructor: FC = () => {
             size="large"
             disabled={burgerIngredients.length === 0 || orderLoading || !bun}
             onClick={handleOrderMaking}
+            data-testid="make-order-button"
           >
             {orderLoading ? "Оформление..." : "Оформить заказ"}
           </Button>

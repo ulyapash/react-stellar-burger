@@ -1,5 +1,5 @@
 import { AppDispatch, TAppThunk, TOrderData } from "../../types";
-import { request } from "../../utils/request";
+import { requestWithToken } from "../../utils/request";
 
 export enum TOrder {
   MAKE_ORDER_REQUEST = "MAKE_ORDER_REQUEST",
@@ -14,7 +14,7 @@ export const makeOrder = (burgerIngredientIds: string[]): TAppThunk => {
       type: TOrder.MAKE_ORDER_REQUEST,
     });
 
-    request("/orders", {
+    requestWithToken("/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
