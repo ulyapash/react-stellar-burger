@@ -1,5 +1,4 @@
 import { FC, useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 
 import {
@@ -17,17 +16,18 @@ import { resetPassword } from "../../services/actions/resetPasswordActions";
 import { forgotPasswordAllowedSelector } from "../../services/selectors/forgotPasswordSelectors";
 
 import "../../styles/form.css";
+import { useAppDispatch, useAppSelector } from "../../types";
 
 const ResetPasswordPage: FC = () => {
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
-  const isLoading = useSelector(resetPasswordLoadingSelector);
-  const isResetted = useSelector(resetPasswordResettedSelector);
-  const error = useSelector(resetPasswordErrorSelector);
-  const isAllowed = useSelector(forgotPasswordAllowedSelector);
+  const isLoading = useAppSelector(resetPasswordLoadingSelector);
+  const isResetted = useAppSelector(resetPasswordResettedSelector);
+  const error = useAppSelector(resetPasswordErrorSelector);
+  const isAllowed = useAppSelector(forgotPasswordAllowedSelector);
 
   const history = useHistory();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handlePasswordChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

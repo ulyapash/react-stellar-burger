@@ -17,7 +17,7 @@ export const Modal: FC<TProps> = ({ title, onClose, children }) => {
   }, []);
 
   const handleClose = useCallback(
-    (e) => {
+    (e: KeyboardEvent) => {
       if (e.code === "Escape") {
         onClose();
       }

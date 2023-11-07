@@ -1,5 +1,4 @@
-import { Dispatch } from "redux";
-import { TOrderData } from "../../types";
+import { AppDispatch, TAppThunk, TOrderData } from "../../types";
 import { request } from "../../utils/request";
 
 export enum TOrder {
@@ -9,8 +8,8 @@ export enum TOrder {
   CLEAR_ORDER = "CLEAR_ORDER",
 }
 
-export const makeOrder = (burgerIngredientIds: string[]) => {
-  return function (dispatch: Dispatch) {
+export const makeOrder = (burgerIngredientIds: string[]): TAppThunk => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: TOrder.MAKE_ORDER_REQUEST,
     });

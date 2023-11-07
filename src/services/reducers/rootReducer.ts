@@ -7,6 +7,7 @@ import { currentIngredientReducer } from "./currentIngredientReducer";
 import { forgotPasswordReducer } from "./forgotPasswordReducer";
 import { resetPasswordReducer } from "./resetPasswordReducer";
 import { userReducer } from "./userReducers";
+import { feedReducer } from "./feedReducer";
 
 export const rootReducer = combineReducers({
   ingredientsReducer,
@@ -16,4 +17,5 @@ export const rootReducer = combineReducers({
   forgotPasswordReducer,
   resetPasswordReducer,
   userReducer,
+  feedReducer,
 });

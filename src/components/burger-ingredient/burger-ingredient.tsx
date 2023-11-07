@@ -1,5 +1,4 @@
 import { FC, useMemo } from "react";
-import { useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
 
 import {
@@ -12,7 +11,7 @@ import {
   burgerIngredientsSelector,
 } from "../../services/selectors/burgerConstructorSelector";
 import styles from "./burger-ingredient.module.css";
-import { TIngredientData } from "../../types";
+import { TIngredientData, useAppSelector } from "../../types";
 
 type TProps = {
   ingredient: TIngredientData;
@@ -23,8 +22,8 @@ export const BurgerIngredient: FC<TProps> = ({
   ingredient,
   handleOpenModal,
 }) => {
-  const bun = useSelector(bunSelector);
-  const burgerIngredients = useSelector(burgerIngredientsSelector);
+  const bun = useAppSelector(bunSelector);
+  const burgerIngredients = useAppSelector(burgerIngredientsSelector);
 
   const count = useMemo(() => {
     if (ingredient.type === "bun") {

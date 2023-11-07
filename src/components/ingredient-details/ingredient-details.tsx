@@ -1,11 +1,25 @@
-import { FC } from "react";
-import { useSelector } from "react-redux";
+import { FC, useEffect } from "react";
 
 import styles from "./ingredient-details.module.css";
 import { currentIngredientSelector } from "../../services/selectors/currentIngredientSelector";
+import { useAppDispatch, useAppSelector } from "../../types";
+import { ingredientsDataSelector } from "../../services/selectors/ingredientsSelector";
+import { useParams } from "react-router-dom";
+import { TCurrentIngredient } from "../../services/actions/currentIngredientActions";
 
 export const IngredientDetails: FC = () => {
-  const ingredient = useSelector(currentIngredientSelector);
+  const ingredient = useAppSelector(currentIngredientSelector);
+  const ingredients = useAppSelector(ingredientsDataSelector);
+  const { id } = useParams<{ id: string }>();
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch({
+      type: TCurrentIngredient.SET_CURRENT_INGREDIENT,
+      payload: ingredients.find((ingredient) => ingredient._id === id)!,
+    });
+  }, [dispatch, ingredients, id]);
 
   if (!ingredient) {
     return null;

@@ -1,7 +1,7 @@
 import { FC, useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import { useHistory } from "react-router-dom";
+import { v4 as uuidV4 } from "uuid";
 
 import {
   Button,
@@ -16,38 +16,34 @@ import {
   bunSelector,
   burgerIngredientsSelector,
 } from "../../services/selectors/burgerConstructorSelector";
-import {
-  TBurgerConstructor,
-  putBun,
-  putBurgerIngredient,
-} from "../../services/actions/burgerConstructorActions";
+import { TBurgerConstructor } from "../../services/actions/burgerConstructorActions";
 import {
   orderErrorSelector,
   orderLoadingSelector,
   orderNameSelector,
   orderNumberSelector,
 } from "../../services/selectors/orderSelector";
+import { userIsLoggedSelector } from "../../services/selectors/userSelector";
 import { TOrder, makeOrder } from "../../services/actions/orderActions";
 import { useModal } from "../../hooks/useModal";
-import { TIngredientData } from "../../types";
+import { TIngredientData, useAppDispatch, useAppSelector } from "../../types";
 
 import styles from "./burger-constructor.module.css";
-import { userIsLoggedSelector } from "../../services/selectors/userSelector";
 
 export const BurgerContructor: FC = () => {
   const { isModalOpen, openModal, closeModal } = useModal();
 
   const history = useHistory();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const bun = useSelector(bunSelector);
-  const burgerIngredients = useSelector(burgerIngredientsSelector);
-  const isLogged = useSelector(userIsLoggedSelector);
+  const bun = useAppSelector(bunSelector);
+  const burgerIngredients = useAppSelector(burgerIngredientsSelector);
+  const isLogged = useAppSelector(userIsLoggedSelector);
 
-  const orderLoading = useSelector(orderLoadingSelector);
-  const orderName = useSelector(orderNameSelector);
-  const orderNumber = useSelector(orderNumberSelector);
-  const orderError = useSelector(orderErrorSelector);
+  const orderLoading = useAppSelector(orderLoadingSelector);
+  const orderName = useAppSelector(orderNameSelector);
+  const orderNumber = useAppSelector(orderNumberSelector);
+  const orderError = useAppSelector(orderErrorSelector);
 
   useEffect(() => {
     if (orderName && orderNumber) {
@@ -86,9 +82,15 @@ export const BurgerContructor: FC = () => {
     accept: "ingredient",
     drop(ingredient: TIngredientData) {
       if (ingredient.type === "bun") {
-        dispatch(putBun(ingredient));
+        dispatch({
+          type: TBurgerConstructor.PUT_BUN,
+          payload: ingredient,
+        });
       } else {
-        dispatch(putBurgerIngredient(ingredient));
+        dispatch({
+          type: TBurgerConstructor.PUT_BURGER_INGREDIENT,
+          payload: { ...ingredient, uniqueId: uuidV4() },
+        });
       }
     },
   });

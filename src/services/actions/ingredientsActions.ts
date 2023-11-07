@@ -1,6 +1,5 @@
 import { request } from "../../utils/request";
-import { TIngredientData } from "../../types";
-import { Dispatch } from "redux";
+import { AppDispatch, TAppThunk, TIngredientData } from "../../types";
 
 export enum TIngredients {
   GET_INGREDIENTS_REQUEST = "GET_INGREDIENTS_REQUEST",
@@ -8,8 +7,8 @@ export enum TIngredients {
   GET_INGREDIENTS_ERROR = "GET_INGREDIENTS_ERROR",
 }
 
-export const getIngredients = () => {
-  return (dispatch: Dispatch) => {
+export const getIngredients = (): TAppThunk => {
+  return (dispatch: AppDispatch) => {
     dispatch({
       type: TIngredients.GET_INGREDIENTS_REQUEST,
     });

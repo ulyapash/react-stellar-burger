@@ -1,5 +1,5 @@
-import { Dispatch } from "redux";
 import { request } from "../../utils/request";
+import { AppDispatch, TAppThunk } from "../../types";
 
 export enum TForgotPassword {
   FORGOT_PASSWORD_REQUEST = "FORGOT_PASSWORD_REQUEST",
@@ -7,8 +7,8 @@ export enum TForgotPassword {
   FORGOT_PASSWORD_ERROR = "FORGOT_PASSWORD_ERROR",
 }
 
-export const forgotPassword = (email: string) => {
-  return function (dispatch: Dispatch) {
+export const forgotPassword = (email: string): TAppThunk => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: TForgotPassword.FORGOT_PASSWORD_REQUEST,
     });
