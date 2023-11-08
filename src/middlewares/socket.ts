@@ -1,33 +1,26 @@
 import type { Middleware, MiddlewareAPI } from "redux";
-import { v4 as uuidV4 } from "uuid";
 
-import { TFeed, TFeedActions } from "../services/actions/feedActions";
+import { TSocketActions, TWSActions } from "../services/actions/socketActions";
 
-import {
-  AppDispatch,
-  RootState,
-  TFeedMessage,
-  TFeedOrderData,
-} from "../types/index";
-import { SOCKET_URL } from "../utils/api";
+import { AppDispatch, RootState } from "../types/index";
 
-export const socketMiddleware = (): Middleware => {
+export const socketMiddleware = (wsActons: TWSActions): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket;
 
-    return (next) => (action: TFeedActions) => {
+    return (next) => (action: TSocketActions) => {
       const { dispatch } = store;
       const { type } = action;
       const {
-        FEED_CONNECTION_START: init,
-        FEED_CONNECTION_SUCCESS: onOpen,
-        FEED_CONNECTION_ERROR: onError,
-        FEED_CONNECTION_CLOSE: onClose,
-        FEED_GET_MESSAGE: onMessage,
-      } = TFeed;
+        init,
+        onOpen,
+        onError,
+        onClose,
+        onMessage,
+      } = wsActons;
 
       if (type === init) {
-        socket = new WebSocket(SOCKET_URL + action.payload);
+        socket = new WebSocket(action.payload);
       }
 
       if (socket) {
@@ -35,16 +28,11 @@ export const socketMiddleware = (): Middleware => {
         socket.onerror = (e) => dispatch({ type: onError, payload: e });
         socket.onmessage = (e) => {
           const { data } = e;
-          const ingredients: TFeedMessage = JSON.parse(data);
+          const parsedData = JSON.parse(data);
+
           dispatch({
             type: onMessage,
-            payload: {
-              ...ingredients,
-              orders: ingredients.orders.map((ingredient: TFeedOrderData) => ({
-                ...ingredient,
-                uniqueId: uuidV4(),
-              })),
-            },
+            payload: parsedData,
           });
         };
         socket.onclose = (e) => dispatch({ type: onClose });

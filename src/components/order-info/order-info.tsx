@@ -12,7 +12,9 @@ import {
   feedConnectedSelector,
   feedOrdersSelector,
 } from "../../services/selectors/feedReducer";
-import { TFeed } from "../../services/actions/feedActions";
+import { TSocket } from "../../services/actions/socketActions";
+
+import { SOCKET_URL } from "../../utils/api";
 
 import {
   TFeedOrderData,
@@ -96,17 +98,17 @@ const OrderInfo: FC = () => {
   useEffect(() => {
     if (!connected) {
       dispatch({
-        type: TFeed.FEED_CONNECTION_START,
-        payload: "/orders/all",
+        type: TSocket.SOCKET_CONNECTION_START,
+        payload: SOCKET_URL + "/orders/all",
       });
 
       return () => {
         dispatch({
-          type: TFeed.FEED_CONNECTION_CLOSE,
+          type: TSocket.SOCKET_CONNECTION_CLOSE,
         });
       };
     }
-  }, []);
+  }, [dispatch, connected]);
 
   if (!order) {
     return null;

@@ -35,13 +35,17 @@ export const Modal: FC<TProps> = ({ title, onClose, children }) => {
 
   return ReactDOM.createPortal(
     <ModalOverlay onClose={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()} data-testid="modal">
         {title && (
           <header className={`${styles.header} mt-10 ml-10 mr-10`}>
-            <h2 className="text text_type_main-large">{title}</h2>
+            <h2 className="text text_type_main-large" data-testid="modal-heading">{title}</h2>
           </header>
         )}
-        <button className={styles.closeButton} onClick={onClose}>
+        <button
+          className={styles.closeButton}
+          onClick={onClose}
+          data-testid="modal-close-button"
+        >
           <CloseIcon type="primary" />
         </button>
         {children}

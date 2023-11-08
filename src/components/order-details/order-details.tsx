@@ -11,8 +11,15 @@ type TProps = {
 export const OrderDetails: FC<TProps> = ({ name, number }) => {
   return (
     <div className={`${styles.orderDetails} pt-30 pr-25 pb-30 pl-25`}>
-      <h2 className="text text_type_digits-large mb-8">{number}</h2>
-      <span className="text text_type_main-medium">{name}</span>
+      <h2
+        className="text text_type_digits-large mb-8"
+        data-testid="order-number"
+      >
+        {number}
+      </h2>
+      <span className="text text_type_main-medium" data-testid="order-name">
+        {name}
+      </span>
       <img
         src={iconOrderDetails}
         alt={"Иконка подтвеждения заказа"}

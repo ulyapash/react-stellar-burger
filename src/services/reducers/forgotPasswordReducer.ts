@@ -10,7 +10,7 @@ type TState = {
   error: Error | null;
 };
 
-const initialState = {
+export const initialState = {
   isLoading: false,
   isAllowed: false,
   error: null,

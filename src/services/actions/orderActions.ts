@@ -1,5 +1,6 @@
 import { AppDispatch, TAppThunk, TOrderData } from "../../types";
-import { request } from "../../utils/request";
+import { getCookie } from "../../utils/cookies";
+import { requestWithToken } from "../../utils/request";
 
 export enum TOrder {
   MAKE_ORDER_REQUEST = "MAKE_ORDER_REQUEST",
@@ -14,10 +15,11 @@ export const makeOrder = (burgerIngredientIds: string[]): TAppThunk => {
       type: TOrder.MAKE_ORDER_REQUEST,
     });
 
-    request("/orders", {
+    requestWithToken("/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + getCookie("accessToken"),
       },
       body: JSON.stringify({ ingredients: burgerIngredientIds }),
     })

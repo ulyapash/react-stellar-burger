@@ -70,18 +70,21 @@ const LoginPage: FC = () => {
           value={email}
           onChange={handleEmailChange}
           disabled={isLoading}
+          data-testid="email-field"
         />
         <PasswordInput
           name="email"
           value={password}
           onChange={handlePasswordChange}
           disabled={isLoading}
+          data-testid="password-field"
         />
         <Button
           htmlType="submit"
           size="large"
           type="primary"
           disabled={isLoading}
+          data-testid="submit-button"
         >
           {isLoading ? "Выполняется вход" : "Войти"}
         </Button>

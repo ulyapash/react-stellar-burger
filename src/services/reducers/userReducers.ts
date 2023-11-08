@@ -17,7 +17,7 @@ type TState = {
   userUpdateError: Error | null;
 };
 
-const initialState = {
+export const initialState = {
   isLoginLoading: false,
   isRegisterLoading: false,
   isLogoutLoading: false,
@@ -139,7 +139,7 @@ export const userReducer: Reducer<TState, TUserActions> = (
       return {
         ...state,
         isUserUpdating: false,
-        userUpdateError: null,
+        userUpdateError: action.payload,
       };
     }
     default: {

@@ -1,16 +1,18 @@
 import { FC, useEffect } from "react";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
 
-import { TFeed } from "../../services/actions/feedActions";
+import { TSocket } from "../../services/actions/socketActions";
 import {
   feedErrorSelector,
   feedOrdersSelector,
 } from "../../services/selectors/feedReducer";
+import OrderFeedElement from "../order-feed-element/order-feed-element";
+
+import { SOCKET_URL } from "../../utils/api";
 
 import { useAppDispatch, useAppSelector } from "../../types";
 
 import styles from "./order-history.module.css";
-import OrderFeedElement from "../order-feed-element/order-feed-element";
 
 const OrderHistory: FC = () => {
   const orders = useAppSelector(feedOrdersSelector);
@@ -23,13 +25,13 @@ const OrderHistory: FC = () => {
 
   useEffect(() => {
     dispatch({
-      type: TFeed.FEED_CONNECTION_START,
-      payload: "/orders/all",
+      type: TSocket.SOCKET_CONNECTION_START,
+      payload: SOCKET_URL + "/orders/all",
     });
 
     return () => {
       dispatch({
-        type: TFeed.FEED_CONNECTION_CLOSE,
+        type: TSocket.SOCKET_CONNECTION_CLOSE,
       });
     };
   }, [dispatch]);
@@ -41,7 +43,7 @@ const OrderHistory: FC = () => {
   if (error) {
     return (
       <p className="text text_type_main-large">
-        Возникал ошибка при загрузке заказов
+        Возникла ошибка при загрузке заказов
       </p>
     );
   }
