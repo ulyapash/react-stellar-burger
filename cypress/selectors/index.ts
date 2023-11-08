@@ -6,7 +6,7 @@ export const burgerConstructor = "[data-testid=burger-constructor]";
 export const burgerIngredients = "[data-testid=burger-ingredients]";
 export const makeOrderButton = "[data-testid=make-order-button]";
 
-export const modal = "[data-testid=modal";
+export const modal = "[data-testid=modal]";
 export const modalHeading = "[data-testid=modal-heading";
 export const modalCloseButton = "[data-testid=modal-close-button]";
 

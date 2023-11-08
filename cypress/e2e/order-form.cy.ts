@@ -39,8 +39,8 @@ describe("Order form", () => {
     cy.get(makeOrderButton).click();
     cy.get(makeOrderButton).should("have.attr", "disabled");
 
-    cy.get(modal).should("exist");
-    cy.get(orderNumber, { timeout: 20000 }).should("not.be.empty");
+    cy.get(modal, { timeout: 20000 }).should("exist");
+    cy.get(orderNumber).should("not.be.empty");
     cy.get(orderName).should("not.be.empty");
     cy.get(modalCloseButton).click();
 
